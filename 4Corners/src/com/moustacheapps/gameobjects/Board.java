@@ -86,8 +86,9 @@ public class Board {
 				// toggle isOn
 				isOn = true;
 			}
-			
-			// if counter is now over the second threshold, and the toggle is on then update the board
+
+			// if counter is now over the second threshold, and the toggle is on
+			// then update the board
 			if (counter > threshold2 && isOn == true) {
 				// reset counter to 0
 				counter = 0;
@@ -112,28 +113,36 @@ public class Board {
 				isOn = false;
 			}
 
-			// if position is less than 0, then set generating to false and allow user input
+			// if position is less than 0, then set generating to false and
+			// allow user input
 			if (position2 < 0) {
 				GameWorld.generating = false;
 			} else {
 				GameWorld.generating = true;
 			}
 
-			// if the sequence is empty then regenerate the sequence, adding difficulty
+			// if the sequence is empty then regenerate the sequence, adding
+			// difficulty
 			if (sequence.isEmpty()) {
 				generateSequence();
 				AssetLoader.coin.play((float) 0.5);
 				timeSinceGenerate = 0;
 				GameWorld.round += 1;
-				threshold = (float) (1 / Math.log(GameWorld.round));
-				threshold2 = (float) (1 / Math.log(GameWorld.round + 1));
+				if (GameWorld.round > 1) {
+					threshold = (float) (1 / Math.log(GameWorld.round));
+					threshold2 = (float) (1 / Math.log(GameWorld.round + 1));
+				} else {
+					threshold = (float) 1.5;
+					threshold2 = (float) 1;
+				}
 			}
 		}
 	}
 
 	// check if user input is the correct one
 	public void check(int x) {
-		// if user input is equal to the value of the sequence at 'position' then remove that element, if not then end the game
+		// if user input is equal to the value of the sequence at 'position'
+		// then remove that element, if not then end the game
 		if (sequence.get(position) == x) {
 			sequence.remove(position);
 			position -= 1;
